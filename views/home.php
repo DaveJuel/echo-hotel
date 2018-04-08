@@ -507,7 +507,7 @@ ob_start();
                                     </div>
                                     <button class="button btn_lg btn_blue btn_full" type="submit">BOOK A ROOM NOW</button>
                                     <div class="a_center mt10">
-                                        <a href="booking-form.html" class="a_b_f">Advanced Booking Form</a>
+                                        <a href="#" class="a_b_f">Advanced Booking Form</a>
                                     </div>
                                 </form>
                             </div>

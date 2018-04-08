@@ -24,7 +24,7 @@
                         <li><a href="#">OUR SERVICES</a></li>
                         <li><a href="#contactus">CONTACT US</a></li>
                         <li class="menu_button">
-                            <a href="../dashboard/view/login.php" class="button  btn_yellow"><i class="fa fa-"></i>SIGN IN</a>
+                            <a href="../dashboard/views/login.php" class="button  btn_yellow"><i class="fa fa-sign-in"></i>SIGN IN</a>
                         </li>
                     </ul>
                 </nav>

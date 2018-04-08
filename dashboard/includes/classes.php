@@ -14,6 +14,9 @@ require 'config.php';
 require 'sectionFormat.php';
 $connection = new connection();
 R::setup("mysql:host=$connection->host;dbname=$connection->db", "$connection->db_user", "$connection->pass_phrase");
+R::ext('xdispense', function($type){
+    return R::getRedBean()->dispense( $type);
+   });
 $main = new main();
 class UIfeeders
 {
@@ -643,7 +646,7 @@ class main extends UIfeeders
         if ($attrNumber == count($attributes)) {
             echo "<form role='form' method='post' action='" . $_SERVER['PHP_SELF'] . "'>";
             echo "<div class='form-group'>";
-            echo "<input type='hidden'  name='article' value='$subjectId'>";
+            echo "<input type='hidden'  name='article' id='article_id' value='$subjectId'>";
             echo '';
             echo "</div>";
             for ($counter = 0; $counter < count($attributes); $counter++) {
@@ -1153,7 +1156,7 @@ class subject extends main
     public function add($subjTitle, $subjAttrNumber, $subjAttributes, $subjCommenting, $subjLikes, $subjDisplayViews)
     {
 
-        if (!$this->isValid($subjTitle) && $subjTitle != 'subject') {
+        if ($this->isValid($subjTitle) && $subjTitle != 'subject') {
             try {
                 $subject = R::dispense("subject");
                 $subject->title = $subjTitle;
@@ -1280,7 +1283,8 @@ class subject extends main
             }
         } catch (Exception $e) {
             $status = false;
-            $this->status = "Error checking username." . $e;
+            $this->status = "ERROR: Unable to validate the subject";
+            error_log("ERROR: Unable to validate the subject ".$e);
         }
         return $status;
     }
@@ -1366,7 +1370,11 @@ class content extends main
     {
         $status = false;
         try {
-            $article = R::dispense($subjectTitle);
+            $subjectTitle=str_replace(" ","_",$subjectTitle);
+            /**
+             * TODO: Need to more validation on the $subjectTitle 
+            */
+            $article = R::xdispense($subjectTitle);
             for ($counter = 0; $counter < count($attributes); $counter++) {
                 $attribute = str_replace(" ", "_", $attributes[$counter]['name']);
                 if ($attributes[$counter]['type'] == 'text') {
@@ -1398,7 +1406,8 @@ class content extends main
     public function add($content, $values, $attributes)
     {
         try {
-            $article = R::dispense($content);
+            $content=str_replace(" ", "_",$content);
+            $article = R::xdispense($content);
             for ($counter = 0; $counter < count($attributes); $counter++) {
                 $attribute = str_replace(" ", "_", $attributes[$counter]['name']);
                 $value = $values[$counter];
@@ -1620,7 +1629,6 @@ class message extends main
         $userType = $userObj->getUserType();
         $userId = $_SESSION['user_id'];
         try {
-            //$notRead = R::getAll("SELECT id,sender,message,created_on FROM message WHERE receiver='$userType' AND status='0'");
             $notRead = R::getAll("SELECT id,sender,message,created_on,status FROM message WHERE receiver='$userId' OR receiver='$userType' AND status='0'");
             if (count($notRead) > 0) {
                 for ($countNR = 0; $countNR < count($notRead); $countNR++) {

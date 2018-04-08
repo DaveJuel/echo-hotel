@@ -205,3 +205,14 @@ function errorHandler(event) {
 function abortHandler(event) {
     notifier(0,"Upload aborted",document.getElementById("upload_status"));
 }
+
+/**
+ * saving the form data 
+*/
+function save(){
+    //get the article id
+    //get related attributes
+    //fetch attribute values from DOM
+    //post data fetched from DOM
+    // return message
+}

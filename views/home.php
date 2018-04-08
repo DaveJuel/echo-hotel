@@ -1,4 +1,4 @@
-<?php require '../admin/includes/interface.php'; ?>
+<?php require '../dashboard/includes/interface.php'; ?>
 <?php
 $title = "Home";
 ob_start();
@@ -957,7 +957,7 @@ ob_start();
         </section>
      
 <!-- ========== CONTACT ========== -->
-<section class="white_bg" id="contact">
+<section class="white_bg" id="contactus">
     <div class="container">
         <div class="main_title mt_wave mt_yellow a_center">
             <h2>CONTACT US</h2>

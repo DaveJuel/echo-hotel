@@ -14,15 +14,15 @@ require 'config.php';
 require 'sectionFormat.php';
 $connection = new connection();
 R::setup("mysql:host=$connection->host;dbname=$connection->db", "$connection->db_user", "$connection->pass_phrase");
-R::ext('xdispense', function($type){
-    return R::getRedBean()->dispense( $type);
-   });
+R::ext('xdispense', function ($type) {
+    return R::getRedBean()->dispense($type);
+});
 $main = new main();
 class UIfeeders
 {
 
     public $instance;
-    public $field;   
+    public $field;
 
     /**
      * <h1>comboBuilder</h1>
@@ -644,7 +644,7 @@ class main extends UIfeeders
         $subjectObj = new subject();
         $attributes = $subjectObj->getAttributes($subjectId);
         if ($attrNumber == count($attributes)) {
-            echo "<form role='form' method='post' action='" . $_SERVER['PHP_SELF'] . "'>";
+            echo "<form role='form' method='post' onsubmit='return false;'>";
             echo "<div class='form-group'>";
             echo "<input type='hidden'  name='article' id='article_id' value='$subjectId'>";
             echo '';
@@ -653,13 +653,13 @@ class main extends UIfeeders
                 $attrName = $attributes[$counter]["name"];
                 $attrType = $attributes[$counter]["type"];
                 echo "<div class='form-group'>";
-                $this->inputGenerator($attributes[$counter]["id"], $attrName, $attrType);
+                $this->inputGenerator($attributes[$counter]["id"], $attrName, $attrType, $caller);
                 echo "</div>";
                 $built = true;
             }
             if ($caller == "add") {
                 echo "<div class='form-group'>";
-                echo "<input type='submit' class='btn btn-dark' name='action' value='Save'>";
+                echo "<input type='submit' class='btn btn-dark' id='save-article' onclick='saveArticle();' name='action' value='Save'>";
                 echo "</div>";
             }
             echo "</form>";
@@ -674,7 +674,7 @@ class main extends UIfeeders
      * <p>Generates the input for attributes with default datatypes</p>
      * @param String $name The name of the attribute
      */
-    private function inputGenerator($id, $name, $type)
+    private function inputGenerator($id, $name, $type, $caller)
     {
         if (isset($this->instance)) {
             $value = $this->getValue($name);
@@ -688,19 +688,19 @@ class main extends UIfeeders
         if ($this->isDataTypeDefault($type)) {
             switch ($type) {
                 case 'text':
-                    $input = "<input type='text' name='$name' class='form-control' $holder='$value'>";
+                    $input = "<input type='text' name='$name' id='$caller" . "_" . "$name' class='form-control' $holder='$value'>";
                     break;
                 case 'numeric':
-                    $input = "<input type='number' name='$name' class='form-control' $holder='$value'>";
+                    $input = "<input type='number' name='$name' id='$caller" . "_" . "$name' class='form-control' $holder='$value'>";
                     break;
                 case 'date':
-                    $input = "<input type='date' name='$name' class='form-control'$holder='$value'>";
+                    $input = "<input type='date' name='$name' id='$caller" . "_" . "$name' class='form-control'$holder='$value'>";
                     break;
                 case 'file':
-                    $input = "<input type='hidden' name='$name' value='' /><input type='file' onfocusout='uploadList(this)' class='form-control'$holder='$value'>";
+                    $input = "<input type='file' id='$caller" . "_" . "$name' class='form-control' $holder='$value'>";
                     break;
                 case 'long text':
-                    $input = "<textarea class='form-control' name='$name'>$value</textarea>";
+                    $input = "<textarea class='form-control' id='$caller" . "_" . "$name' name='$name'>$value</textarea>";
                     break;
             }
         } else {
@@ -1283,8 +1283,7 @@ class subject extends main
             }
         } catch (Exception $e) {
             $status = false;
-            $this->status = "ERROR: Unable to validate the subject";
-            error_log("ERROR: Unable to validate the subject ".$e);
+            $this->status = "Error validating subject title " . $e;
         }
         return $status;
     }
@@ -1314,14 +1313,15 @@ class subject extends main
         $header = array("Title", "Created by", "Created on", "Last update");
         $tablecontent = null;
         try {
-            $subjectList = R::getAll("SELECT title,created_by,created_on,last_update FROM subject ORDER BY created_on DESC ");
+            $subjectList = R::getAll("SELECT id,title,created_by,created_on,last_update FROM subject ORDER BY created_on DESC ");
             for ($count = 0; $count < count($subjectList); $count++) {
+                $subjectId = $subjectList[$count]['id'];
                 $title = $subjectList[$count]['title'];
                 //TODO: Get the creator name
                 $createdBy = $subjectList[$count]['created_by'];
                 $createdOn = $subjectList[$count]['created_on'];
                 $lastUpdate = $subjectList[$count]['last_update'];
-                $tablecontent[$count] = array(1 => $title, 2 => $createdBy, 3 => $createdOn, 4 => $lastUpdate);
+                $tablecontent[$count] = array(0 => $subjectId, 1 => $title, 2 => $createdBy, 3 => $createdOn, 4 => $lastUpdate);
             }
             $this->displayTable($header, $tablecontent, null);
         } catch (Exception $e) {
@@ -1332,25 +1332,32 @@ class subject extends main
     /**
      * delete
      * This method deleted the subject specified
-    */
-    public function delete($subjectId){
-        if(isset($subjectId)){
-          try{
-             $subjectTitle=R::getCell("SELECT title FROM subject WHERE id='$subjectId'");
-             if(isset($subjectTitle)) $tableDropped=R::exec("DROP TABLE $subjectTitle");
-             if($tableDropped)R::exec("DELETE FROM subject WHERE id='$subjectId'");
-             $subjectId=$this->getId($subjectTitle);
-             if(!isset($subjectId)){
-                $this->status=$this->feedbackFormat(1,"Subject deleted successfully");
-             }else{
-                $this-> status=$this->feedbackFormat(0,"Unable to delete subject");
-             }
-          }catch(Exception $e){
-              error_log("SUBJECT:DELETE".$e);
-             $this->status=$this->feedbackFormat(0,"Error occured");
-          }
-        }else{
-         $this->status=$this->feedbackFormat(0,"Subject not specified");
+     */
+    public function delete($subjectId)
+    {
+        if (isset($subjectId)) {
+            try {
+                $subjectTitle = R::getCell("SELECT title FROM subject WHERE id='$subjectId'");
+                if (isset($subjectTitle)) {
+                    $tableDropped = R::exec("DROP TABLE $subjectTitle");
+                }
+
+                if ($tableDropped) {
+                    R::exec("DELETE FROM subject WHERE id='$subjectId'");
+                }
+
+                $subjectId = $this->getId($subjectTitle);
+                if (!isset($subjectId)) {
+                    $this->status = $this->feedbackFormat(1, "Subject deleted successfully");
+                } else {
+                    $this->status = $this->feedbackFormat(0, "Unable to delete subject");
+                }
+            } catch (Exception $e) {
+                error_log("SUBJECT:DELETE" . $e);
+                $this->status = $this->feedbackFormat(0, "Error occured");
+            }
+        } else {
+            $this->status = $this->feedbackFormat(0, "Subject not specified");
         }
         die($this->status);
     }
@@ -1370,11 +1377,7 @@ class content extends main
     {
         $status = false;
         try {
-            $subjectTitle=str_replace(" ","_",$subjectTitle);
-            /**
-             * TODO: Need to more validation on the $subjectTitle 
-            */
-            $article = R::xdispense($subjectTitle);
+            $article = R::dispense($subjectTitle);
             for ($counter = 0; $counter < count($attributes); $counter++) {
                 $attribute = str_replace(" ", "_", $attributes[$counter]['name']);
                 if ($attributes[$counter]['type'] == 'text') {
@@ -1406,7 +1409,6 @@ class content extends main
     public function add($content, $values, $attributes)
     {
         try {
-            $content=str_replace(" ", "_",$content);
             $article = R::xdispense($content);
             for ($counter = 0; $counter < count($attributes); $counter++) {
                 $attribute = str_replace(" ", "_", $attributes[$counter]['name']);
@@ -1514,15 +1516,15 @@ class message extends main
         } else {
             $lname = $fname = $sender;
         }
-        if(!isset($sender)){
+        if (!isset($sender)) {
             $this->status = $this->feedbackFormat(0, "Missing sender name!");
             die($this->status);
-        } 
-        if(!isset($email)){
+        }
+        if (!isset($email)) {
             $this->status = $this->feedbackFormat(0, "Missing sender email!");
             die($this->status);
         }
-        if(!isset($message)){
+        if (!isset($message)) {
             $this->status = $this->feedbackFormat(0, "You need to type your message");
             die($this->status);
         }
@@ -1629,6 +1631,7 @@ class message extends main
         $userType = $userObj->getUserType();
         $userId = $_SESSION['user_id'];
         try {
+            //$notRead = R::getAll("SELECT id,sender,message,created_on FROM message WHERE receiver='$userType' AND status='0'");
             $notRead = R::getAll("SELECT id,sender,message,created_on,status FROM message WHERE receiver='$userId' OR receiver='$userType' AND status='0'");
             if (count($notRead) > 0) {
                 for ($countNR = 0; $countNR < count($notRead); $countNR++) {
@@ -2132,7 +2135,7 @@ class web extends main
     public function showContent($title, $formatType, $attributes)
     {
         $subject = new subject();
-        $format=new sectionFormat();
+        $format = new sectionFormat();
         if (isset($title) && isset($formatType) && isset($attributes)) {
             $content = new content();
             for ($count = 0; $count < count($attributes); $count++) {
@@ -2143,10 +2146,13 @@ class web extends main
                 $contentItem = $contentList[$outer];
                 switch ($formatType) {
                     case 1: //slide
-                         $format->showSlider($contentItem[1], $contentItem[2], $contentItem[3]);
+                        //$format->showSlider($contentItem[1], $contentItem[2], $contentItem[3]);
+                        $format->showSlider_theme2($contentItem[1],$contentItem[2],$contentItem[3],
+                        $contentItem[4],$contentItem[5],$contentItem[6]);  
+                        if($outer==0 ) break;                      
                         break;
                     case 2: //features
-                         $format->showFeature($contentList);
+                        $format->showFeature($contentList);
                         break;
                     case 3:
                         /*
@@ -2332,22 +2338,25 @@ class Sender
 
 }
 /*
-* Handling all upload process
-*/
-class file_handler extends main {
+ * Handling all upload process
+ */
+class file_handler extends main
+{
 
     public $status = "";
-    public $fileId="";
+    public $fileId = "";
+    public $filePath = "";
 
     /**
      * <h1>upload</h1>
      * Uploading the and image
      * @param $file the name of the image to be uploaded
      * @param $category The category in which the image can be described in
-     */    
-    public function upload($file) {
+     */
+    public function upload($file)
+    {
         //GETTING THE PARAMETERS TO READ
-        //PHONE => DEFINE COLUMN TO READ         
+        //PHONE => DEFINE COLUMN TO READ
         $db_file_name = basename($file['name']);
         $ext = explode(".", $db_file_name);
         $fileExt = end($ext);
@@ -2363,7 +2372,7 @@ class file_handler extends main {
                 UPLOAD_ERR_NO_FILE => "No file.",
                 UPLOAD_ERR_NO_TMP_DIR => "No temporary directory.",
                 UPLOAD_ERR_CANT_WRITE => "Can't write to disk.",
-                UPLOAD_ERR_EXTENSION => "File upload stopped by extension."
+                UPLOAD_ERR_EXTENSION => "File upload stopped by extension.",
             );
 
             if (!$file || empty($file) || !is_array($file)) {
@@ -2378,21 +2387,22 @@ class file_handler extends main {
                 $ext = explode(".", $db_file_name);
                 $fileExt = end($ext);
                 $taget_file = rand(100000000000, 999999999999) . "." . $fileExt;
-                $directory="../../images/uploaded/";
-                if(!is_dir($directory)){
-                    mkdir($directory,0777);
+                $directory = "../../images/uploaded/";
+                if (!is_dir($directory)) {
+                    mkdir($directory, 0777);
                 }
                 $path = $directory . $taget_file;
                 if (move_uploaded_file($temp_name, $path)) {
                     try {
                         $fileDetails = R::dispense("image");
                         $fileDetails->name = $taget_file;
-                        $fileDetails->path = $path;
+                        $fileDetails->path = "../images/uploaded/" . $taget_file;
                         $fileDetails->added_on = date("Y-m-d h:m:s");
                         $fileDetails->added_by = $_SESSION['user_id'];
                         $fileDetails->status = false;
                         $fileId = R::store($fileDetails);
-                        $this->status = json_encode(array('id'=>$fileId,'type' => 'success', 'text' => "Upload successful"));//$this->feedbackFormat(1, "Image added");
+                        $this->filePath = "../images/uploaded/" . $taget_file;
+                        $this->status = json_encode(array('id' => $fileId, 'type' => 'success', 'text' => "Upload successful", 'path' => $path));
                     } catch (Exception $e) {
                         $this->status = $this->feedbackFormat(0, "Image not added");
                         error_log($e);

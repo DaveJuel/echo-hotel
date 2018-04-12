@@ -5,11 +5,11 @@ require 'classes.php';
 $user = new user();
 $subject = new subject();
 $content = new content();
-$web = new web ();
-$dashboard = new dashboard ();
-$message = new message ();
-$notification = new notification ();
-$smsKey = new sms ();
+$web = new web();
+$dashboard = new dashboard();
+$message = new message();
+$notification = new notification();
+$smsKey = new sms();
 $fileHandler = new file_handler();
 $action = null;
 //getting caller details
@@ -30,7 +30,7 @@ switch ($action) {
         $response = $user->login($_SESSION['username'], $password);
         break;
     case 'add_user':
-        $valid=true;
+        $valid = true;
         $fname = $_REQUEST['fname'];
         $lname = $_REQUEST['lname'];
         $oname = $_REQUEST['oname'];
@@ -42,25 +42,25 @@ switch ($action) {
         $username = $_REQUEST['username'];
         $type = $_REQUEST['user_type'];
         //checking the registering a new user
-        if(empty($fname)||empty($lname)||empty($email)){
+        if (empty($fname) || empty($lname) || empty($email)) {
             $user->status = $user->feedbackFormat(0, "Missing input!");
-            $valid=false;
+            $valid = false;
         }
-        if(empty($username)){
+        if (empty($username)) {
             $user->status = $user->feedbackFormat(0, "Missing username!");
-            $valid=false;  
+            $valid = false;
         }
-        if($cpassword!=$password){
+        if ($cpassword != $password) {
             $user->status = $user->feedbackFormat(0, "Password do not match!");
-            $valid=false; 
+            $valid = false;
         }
-        if(empty($type)){
+        if (empty($type)) {
             $user->status = $user->feedbackFormat(0, "User type not defined!");
-            $valid=false; 
+            $valid = false;
         }
         if ($valid) {
-            $user->add($fname, $lname, $oname, $email, $tel, $address, $username, $password, $type);            
-        } 
+            $user->add($fname, $lname, $oname, $email, $tel, $address, $username, $password, $type);
+        }
         die($user->status);
         break;
     case 'Add subject':
@@ -80,7 +80,7 @@ switch ($action) {
                         'name' => $attrName,
                         'type' => $attrType,
                         'has_ref' => false,
-                        'reference' => NULL);
+                        'reference' => null);
                 } else if (!$subject->isDataTypeDefault($attrType) && !$subject->isDataTypeTable($attrType)) {
                     $attrDetails = explode("|", $attrType);
                     if (isset($attrDetails[0]) && isset($attrDetails[1]) && $subject->isDataTypeTable($attrDetails[0]) && $subject->isDataTypeColumn($attrDetails[1])) {
@@ -108,34 +108,41 @@ switch ($action) {
         }
         break;
     case 'delete_subject':
-        $subjectId=$_REQUEST["subject_id"];
+        $subjectId = $_REQUEST["subject_id"];
         $subject->delete($subjectId);
-        break;    
-    case 'Save':
+        break;
+    case 'save':
         $values = array();
         $articleId = $_REQUEST['article'];
         $attributes = $subject->getAttributes($articleId);
         if (count($attributes) > 0) {
             //getting form values
             for ($count = 0; $count < count($attributes); $count++) {
-                $values[$count] = $_REQUEST[$attributes[$count]['name']];
+               if($attributes[$count]['type']=="file"){
+                    $file = $_FILES[$attributes[$count]['name']];
+                    $fileHandler->upload($file);
+                    $values[$count] = $fileHandler->filePath;
+                }else{
+                    $values[$count] = $_REQUEST[$attributes[$count]['name']];
+                }
             }
             //saving form data
             $main->status = $content->add($main->header($articleId), $values, $attributes);
         } else {
             $main->status = $main->feedbackFormat(0, "ERROR: Form data not fetched!");
         }
+        die($main->status);
         break;
-    case 'send_message' :
-        $sender = $_REQUEST ['name'];
-        $email = $_REQUEST ['email'];
-        $messageTXT = $_REQUEST ['message'];
+    case 'send_message':
+        $sender = $_REQUEST['name'];
+        $email = $_REQUEST['email'];
+        $messageTXT = $_REQUEST['message'];
         $message->send($sender, $email, $messageTXT);
         break;
-    case 'Send' :
-        $recipient = $_REQUEST ['send_sms_recipient'];
-        $subject = $_REQUEST ['send_sms_subject'];
-        $messageTXT = $_REQUEST ['send_sms_message'];
+    case 'Send':
+        $recipient = $_REQUEST['send_sms_recipient'];
+        $subject = $_REQUEST['send_sms_subject'];
+        $messageTXT = $_REQUEST['send_sms_message'];
         $smsKey->send($recipient, $subject, $messageTXT);
         break;
     //UI callers
@@ -157,11 +164,26 @@ switch ($action) {
         $field = $_REQUEST['field'];
         $main->feedModal($instance, $field);
         break;
-    case'add_file':
+    case 'add_file':
         $file = $_FILES['image'];
         $result = $fileHandler->upload($file);
-        echo $result;
-    break;    
+        die($result);
+        break;
+    case 'get_article_attributes':
+        if (isset($_REQUEST['article_id'])) {
+            $articleId = $_REQUEST['article_id'];
+            $attributeList = $subject->getAttributes($articleId);
+            if (count($attributeList) > 0) {
+                $main->status = json_encode(array('type' => 'success', 'attributes' => $attributeList));
+            } else {
+                $main->status = $main->feedbackFormat(0, "Unable to get attributes");
+            }
+            die($main->status);
+        } else {
+            $main->status = $main->feedbackFormat(0, "Empty article reference id");
+            die($main->status);
+        }
+        break;
     default:
         break;
 }

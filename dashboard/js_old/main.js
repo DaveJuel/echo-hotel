@@ -9,9 +9,9 @@ function notifier(status, text, holder) {
         holder.innerHTML = "<span class='alert alert-danger'>" + text + "</span>";
     } else if (status == 1) {
         holder.innerHTML = "<span class='alert alert-success'>" + text + "</span>";
-    } else if (status == 2) {
-        holder.innerHTML = "<span class='alert alert-info'><span class='fa fa-spinner fa-pulse'></span>" + text + "</span>";
-    } else {
+    } else if(status==2){
+        holder.innerHTML = "<span class='alert alert-info'><span class='fa fa-spinner fa-pulse'></span>"+text+"</span>";
+    }else {
         holder.innerHTML = "<span class='alert alert-info'>" + text + "</span>";
     }
 }
@@ -44,12 +44,12 @@ function addAttribute(obj) {
         attrType.name = "attr_type" + i;
         attrType.onchange = "loadComboBox(this)";
         attrType.innerHTML = "<option value=''>-- Select type --</option>" +
-            "<option value='text'>Text</option>" +
-            "<option value='numeric'>Numeric</option>" +
-            "<option value='date'>Date</option>" +
-            "<option value='file'>File</option>" +
-            "<option value='long text'>Long text</option>" +
-            "<option value='select'>Select from</option>";
+                "<option value='text'>Text</option>" +
+                "<option value='numeric'>Numeric</option>" +
+                "<option value='date'>Date</option>" +
+                "<option value='file'>File</option>" +
+                "<option value='long text'>Long text</option>" +
+                "<option value='select'>Select from</option>";
         attrType.className = "form-control";
         attrType.style = "margin-left:15px;margin-bottom:2px";
         attrType.setAttribute("onchange", "loadComboBox(this)");
@@ -109,12 +109,12 @@ function loadComboBox(obj) {
         xmlhttp.send();
     } else if (obj.value == "none") {
         obj.innerHTML = "<option value=''>-- Select type --</option>" +
-            "<option value='text'>Text</option>" +
-            "<option value='numeric'>Numeric</option>" +
-            "<option value='date'>Date</option>" +
-            "<option value='file'>File</option>" +
-            "<option value='long text'>Long text</option>" +
-            "<option value='select'>Select from</option>";
+                "<option value='text'>Text</option>" +
+                "<option value='numeric'>Numeric</option>" +
+                "<option value='date'>Date</option>" +
+                "<option value='file'>File</option>" +
+                "<option value='long text'>Long text</option>" +
+                "<option value='select'>Select from</option>";
     }
 }
 
@@ -164,10 +164,10 @@ function feedModal() {
 }
 
 function uploadList(obj) {
-
+    
     var file = obj.files[0];
     if (!file) {
-        notifier(0, "No file", document.getElementById("upload_status"));
+       notifier(0,"No file",document.getElementById("upload_status"));
     } else {
         var fd = new FormData();
         fd.append("image", file);
@@ -183,26 +183,36 @@ function uploadList(obj) {
 
 
 function progressHandler(event) {
-    notifier(2, "Uploading ...", document.getElementById("status"));
+  notifier(2, "Uploading ...",document.getElementById("status"));
 }
 
 function completeHandler(event) {
-    var response = JSON.parse(event.target.responseText);
-    if (response.type == "error") {
-        notifier(0, response.text, document.getElementById("status"));
-    } else if (response.type == "success") {
-        document.getElementsByName("image").value = response.filename;
-        notifier(1, response.text, document.getElementById("status"));
+    var response =JSON.parse(event.target.responseText);
+    if (response.type=="error") {        
+        notifier(0,response.text,document.getElementById("status"));        
+    }else if(response.type=="success"){
+        document.getElementsByName("image").value=response.filename;
+        notifier(1,response.text,document.getElementById("status"));
     } else {
-        notifier(3, response.text, document.getElementById("status"));
-    }
+        notifier(3,response.text,document.getElementById("status"));
+    }   
 }
 
 function errorHandler(event) {
-    notifier(0, "Upload failed", document.getElementById("status"));
+    notifier(0,"Upload failed",document.getElementById("status"));
 }
 
 function abortHandler(event) {
-    notifier(0, "Upload aborted", document.getElementById("upload_status"));
+    notifier(0,"Upload aborted",document.getElementById("upload_status"));
 }
 
+/**
+ * saving the form data 
+*/
+function save(){
+    //get the article id
+    //get related attributes
+    //fetch attribute values from DOM
+    //post data fetched from DOM
+    // return message
+}

@@ -19,7 +19,7 @@ class connection{
                 $this->pass_phrase = $url["pass"];
                 $this->db = substr($url["path"], 1);
             } else {
-                /*
+               /*
                  * Local connection
                  */
                 $this->host = "localhost";

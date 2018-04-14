@@ -10,7 +10,7 @@ ob_start();
             <div id="hero" class="rev_slider gradient_slider" style="display:none">
                 <ul>
                 <?php 
-                   $web->showContent("slider",1,["image","header","rate","description_c1","description_c2","description_c3"]); ?>
+                   $web->showContent("slider",1,["image","title","rating","description_c1","description_c2","description_c3"]); ?>
                 </ul>
             </div>
         </div>

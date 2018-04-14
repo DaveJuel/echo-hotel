@@ -272,68 +272,9 @@ class sectionFormat{
                             <!-- ========== BOOKING FORM ========== -->
                             <div class="vbf">
                                 <h2 class="form_title"><i class="fa fa-calendar"></i> BOOK ONLINE</h2>
-                                <form id="booking-form" class="inner">
-                                    <div class="form-group">
-                                        <input class="form-control" name="booking-name" placeholder="Enter Your Name" type="text">
-                                    </div>
-                                    <div class="form-group">
-                                        <input class="form-control" name="booking-email" placeholder="Enter Your Email Address" type="email">
-                                    </div>
-                                    <div class="form-group">
-                                        <input class="form-control" name="booking-phone" placeholder="Enter Your Phone Number" type="text">
-                                    </div>
-                                    <div class="form-group">
-                                        <div class="form_select">
-                                            <select name="booking-roomtype" class="form-control" title="Specify purpose of your visit" data-header="Specify the purpose of your visit">
-                                                <option value="Single Room">Tourism</option>
-                                                <option value="Double Room">Study tour</option>
-                                                <option value="Deluxe Room">Attending a training </option>
-                                                <option value="Double Room">Attending an International meeting</option>
-                                                <option value="Deluxe Room">Meeting high ranked personalities</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-md-6 col-sm-6 col-xs-12 nopadding">
-                                         <div class="form_select">
-                                         <select name="booking-country" class="form-control" title="Visit Country" data-header="Country You Wish to Visit" data-live-search="true" data-size="5">
-                                                   
-                                         <option value="Rwanda">Rwanda</option>
-                                        
-                                     </select>
-                                            </div>
-                                    </div>
-                                    
-                                       <div class="form-group col-md-6 col-sm-6 col-xs-12 nopadding">
-                                        <div class="form-group">
-                                             <div class="form_select">
-                                                <select name="booking-country" class="form-control" title="Visit Country" data-header="Country You Wish to Visit" data-live-search="true" data-size="5">
-                                                   
-                                                    <option value="Rwanda">Rwanda</option>
-                                                   
-                                                </select>
-                                            </div>
-                                        
-                                    </div>
-                                    </div>
-                                    <div class="form-group col-md-6 col-sm-6 col-xs-12 nopadding">
-                                        <div class="input-group">
-                                            <div class="form_date">
-                                                <input type="text" class="datepicker form-control md_noborder_right" name="booking-checkin" placeholder="Arrival Date" readonly>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="form-group col-md-6 col-sm-6 col-xs-12 nopadding">
-                                        <div class="input-group">
-                                            <div class="form_date">
-                                                <input type="text" class="datepicker form-control" name="booking-checkout" placeholder="Departure Date" readonly>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <button class="button btn_lg btn_blue btn_full" type="submit">BOOK A ROOM NOW</button>
-                                    <div class="a_center mt10">
-                                        <a href="#" class="a_b_f">Advanced Booking Form</a>
-                                    </div>
-                                </form>
+                                <div id ="booking-form-holder">
+                                
+                                </div>
                             </div>
                         </div>
                         <!-- LAYER NR. 15 --> 

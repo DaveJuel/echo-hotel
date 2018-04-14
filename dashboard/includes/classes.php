@@ -704,17 +704,17 @@ class main extends UIfeeders
                     break;
             }
         } else {
-            $input = $this->referentialDataInputGenerator($id, $name, $type);
+            $input = $this->referentialDataInputGenerator($id, $name, $type,$caller);
         }
         $formInput = $title . $input;
         echo "<div class='input-group'>" . $formInput . "</div>";
     }
 
-    private function referentialDataInputGenerator($id, $name, $type)
+    private function referentialDataInputGenerator($id, $name, $type,$caller)
     {
         $input = "";
         if (isset($id) && isset($name) && isset($type)) {
-            $startCombo = "<select type='date' name='$name' class='form-control'>";
+            $startCombo = "<select type='date' id='$caller" . "_" . "$name' name='$name' class='form-control'>";
             $subjectObj = new subject();
             $reference = $subjectObj->readReference($id);
             if (isset($reference) && $subjectObj->isDataTypeTable($type)) {
@@ -758,6 +758,7 @@ class main extends UIfeeders
     //BUILDING THE SELECT
     public function fetchBuilder($table, $columnList)
     {
+        $table=str_replace(" ", "_", $table);
         $result = null;
         $query = "";
         //building the syntax
@@ -1377,7 +1378,8 @@ class content extends main
     {
         $status = false;
         try {
-            $article = R::dispense($subjectTitle);
+            $subjectTitle= str_replace(" ", "_", $subjectTitle);
+            $article = R::xdispense($subjectTitle);
             for ($counter = 0; $counter < count($attributes); $counter++) {
                 $attribute = str_replace(" ", "_", $attributes[$counter]['name']);
                 if ($attributes[$counter]['type'] == 'text') {
@@ -1409,6 +1411,7 @@ class content extends main
     public function add($content, $values, $attributes)
     {
         try {
+            $content= str_replace(" ", "_", $content);
             $article = R::xdispense($content);
             for ($counter = 0; $counter < count($attributes); $counter++) {
                 $attribute = str_replace(" ", "_", $attributes[$counter]['name']);

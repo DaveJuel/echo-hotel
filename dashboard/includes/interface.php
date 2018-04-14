@@ -184,6 +184,14 @@ switch ($action) {
             die($main->status);
         }
         break;
+    case 'load_form':
+        if(isset($_REQUEST['article_id'])){
+            $main->formBuilder($_REQUEST['article_id'],"add"); 
+        }else{
+            $main->feedbackFormat(0, "No form specified");
+            die($main->status);
+        }               
+        break;    
     default:
         break;
 }

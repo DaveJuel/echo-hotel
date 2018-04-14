@@ -75,7 +75,7 @@ require '../includes/interface.php';
             </div>
         </div>
         <div class="form-group">
-            <span id="notification"></span>
+            <span id="board-notification"></span>
         </div>
     </form>
 </div>

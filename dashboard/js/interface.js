@@ -23,8 +23,8 @@ function notifier(status, text) {
         output = "<span class='alert alert-info'><span class='fa fa-spinner fa-pulse'></span>" + text + "</span>";
     } else {
         output = "<span class='alert alert-info'>" + text + "</span>";
-    }
-    document.getElementById("notification").innerHTML = output;
+    }    
+    document.getElementById("board-notification").innerHTML = output;
 }
 /*
  * ============ LOGIN ===============
@@ -252,14 +252,19 @@ $(".save-article").on('click', function (e) {
     }
 });
 
-function fetchDataToSave(articleId) {
+function fetchDataToSave(articleId, calledFrom) {
     var dataToPost;
     if (articleId != null) {
         //get attributes
         var attributeList = null;
         if (articleId != null) {
             var http = new XMLHttpRequest();
-            var url = "../includes/interface.php";
+            var url = "";
+            if (calledFrom != null) {
+                url = calledFrom + "/includes/interface.php";
+            } else {
+                url = "../includes/interface.php";
+            }
             var params = "action=get_article_attributes&article_id=" + articleId;
             http.open("POST", url, true);
             http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -283,9 +288,9 @@ function fetchDataToSave(articleId) {
                             }
                         }
                         if (hasFile) {
-                            uploadData(fileObject, dataToPost);
+                            uploadData(fileObject, dataToPost, calledFrom);
                         } else {
-                            postData(dataToPost);
+                            postData(dataToPost, calledFrom);
                         }
                     } else {
                         notifier(0, "Unable to read attributes");
@@ -298,17 +303,22 @@ function fetchDataToSave(articleId) {
 }
 
 //saving the form with ajax
-function saveArticle() {
+function saveArticle(calledFrom) {
     //get the article id
     notifier(2, " Saving...");
     var articleId = document.getElementById("article_id").value;
-    fetchDataToSave(articleId);
+    fetchDataToSave(articleId, calledFrom);
 }
 
-function postData(formData) {
+function postData(formData, calledFrom) {
     console.log("PARAMS: " + formData);
     var http = new XMLHttpRequest();
-    var url = "../includes/interface.php";
+    var url = "";
+    if (calledFrom != null) {
+        url = calledFrom + "/includes/interface.php";
+    } else {
+        url = "../includes/interface.php";
+    }
     http.open("POST", url, true);
     http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     http.onreadystatechange = function () { //Call a function when the state changes.
@@ -326,8 +336,14 @@ function postData(formData) {
     http.send(formData);
 }
 
-function uploadData(fileObj, params) {
+function uploadData(fileObj, params, calledFrom) {
     if (params != null && fileObj != null) {
+        var url = "";
+        if (calledFrom != null) {
+            url = calledFrom + "/includes/interface.php";
+        } else {
+            url = "../includes/interface.php";
+        }
         var fd = new FormData();
         fd.append("image", fileObj);
         var http = new XMLHttpRequest();
@@ -335,7 +351,7 @@ function uploadData(fileObj, params) {
         http.addEventListener("load", completeHandler, false);
         http.addEventListener("error", errorHandler, false);
         http.addEventListener("abort", abortHandler, false);
-        http.open("POST", "../includes/interface.php?" + params);
+        http.open("POST", url + "?" + params);
         http.send(fd);
     }
 }

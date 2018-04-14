@@ -97,7 +97,7 @@
         </div>
 
         <!-- ========== NOTIFICATION ========== -->
-        <div id="notification"></div>
+        <div id="land-notification"></div>
 
         <!-- ========== JAVASCRIPT ========== -->
         <script type="text/javascript" src="../js/custom.js"></script>
@@ -120,6 +120,7 @@
         <script type="text/javascript" src="../js/jquery.countdown.min.js"></script>
         <script type="text/javascript" src="../js/main.js"></script>
         <script type="text/javascript" src="../js/tawkChat.js"></script>
+        <script type="text/javascript" src="../dashboard/js/interface.js"></script>
         <!-- ========== REVOLUTION SLIDER ========== -->
         <script type="text/javascript" src="../revolution/js/jquery.themepunch.tools.min.js"></script>
         <script type="text/javascript" src="../revolution/js/jquery.themepunch.revolution.min.js"></script>

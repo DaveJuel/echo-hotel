@@ -1,4 +1,4 @@
-<?php require '../admin/includes/interface.php'; ?>
+<?php require '../dashboard/includes/interface.php'; ?>
 <?php
 $title = "Home";
 ob_start();
@@ -8,7 +8,7 @@ ob_start();
     <div class="rev_slider_wrapper fullscreen-container">
         <div id="fullscreen_slider" class="rev_slider fullscreenbanner gradient_slider" style="display:none">
             <ul>
-                <?php $web->showContent("slider",1,["image","title","description"]); ?>
+                <?php $web->showContent("slider",1,["image","title","descriptionC1"]); ?>
             </ul>
         </div>
     </div>      

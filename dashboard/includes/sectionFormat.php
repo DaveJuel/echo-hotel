@@ -295,7 +295,11 @@ class sectionFormat{
                                     </div>
                                     <div class="form-group col-md-6 col-sm-6 col-xs-12 nopadding">
                                          <div class="form_select">
-                                               
+                                         <select name="booking-country" class="form-control" title="Visit Country" data-header="Country You Wish to Visit" data-live-search="true" data-size="5">
+                                                   
+                                         <option value="Rwanda">Rwanda</option>
+                                        
+                                     </select>
                                             </div>
                                     </div>
                                     

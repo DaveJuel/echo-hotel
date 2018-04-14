@@ -2134,19 +2134,19 @@ class web extends main
      */
     public function showContent($title, $formatType, $attributes)
     {
-        $subject = new subject();
+       $subject = new subject();
         $format = new sectionFormat();
         if (isset($title) && isset($formatType) && isset($attributes)) {
-            $content = new content();
+           $content = new content();
             for ($count = 0; $count < count($attributes); $count++) {
                 $attributList[$count] = ["name" => $attributes[$count]];
             }
             $contentList = $this->fetchBuilder($title, $attributList);
             for ($outer = 0; $outer < count($contentList); $outer++) {
-                $contentItem = $contentList[$outer];
+                $contentItem = $contentList[$outer]; 
                 switch ($formatType) {
                     case 1: //slide
-                        //$format->showSlider($contentItem[1], $contentItem[2], $contentItem[3]);
+                      ///$format->showSlider($contentItem[1], $contentItem[2], $contentItem[3]);
                         $format->showSlider_theme2($contentItem[1],$contentItem[2],$contentItem[3],
                         $contentItem[4],$contentItem[5],$contentItem[6]);  
                         if($outer==0 ) break;                      

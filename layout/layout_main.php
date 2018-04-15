@@ -87,7 +87,9 @@
         </div>
             <?php include '../components/header.php'; ?>
             <?php include '../components/modular.php'; ?>
-            <?php echo $content; ?>
+            <div id="content-container">
+               <?php echo $content; ?>
+            </div>            
             <?php include '../components/footer.php'; ?>
         </div>
 
@@ -99,8 +101,7 @@
         <!-- ========== NOTIFICATION ========== -->
         <div id="land-notification"></div>
 
-        <!-- ========== JAVASCRIPT ========== -->
-        <script type="text/javascript" src="../js/custom.js"></script>
+        <!-- ========== JAVASCRIPT ========== -->       
         <script type="text/javascript" src="../js/jquery.min.js"></script>        
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyARYImebnuXTLS7DslhfUVx3yJXtM-rpgk&libraries=places&callback=initAutocomplete" async defer></script>
         <script type="text/javascript" src="../js/bootstrap.min.js"></script>
@@ -121,6 +122,7 @@
         <script type="text/javascript" src="../js/main.js"></script>
         <script type="text/javascript" src="../js/tawkChat.js"></script>
         <script type="text/javascript" src="../dashboard/js/interface.js"></script>
+        <script type="text/javascript" src="../js/custom.js"></script>
         <!-- ========== REVOLUTION SLIDER ========== -->
         <script type="text/javascript" src="../revolution/js/jquery.themepunch.tools.min.js"></script>
         <script type="text/javascript" src="../revolution/js/jquery.themepunch.revolution.min.js"></script>

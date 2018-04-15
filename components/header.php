@@ -1,4 +1,4 @@
- 
+
  <!-- ========== HEADER ========== -->
  <header class="fixed transparent">
             <div class="container">
@@ -9,10 +9,10 @@
                         <span class="icon-bar"></span>
                     </button>
                     <a class="navbar-brand light" href="index.html">
-                        <img src="images/logo_light.svg" height="32" alt="<?php echo $main->appName;?>">
+                        <img src="images/logo_light.svg" height="32" alt="<?php echo $main->appName; ?>">
                     </a>
                     <a class="navbar-brand dark nodisplay" href="index.html">
-                        <img src="images/logo.svg" height="32" alt="<?php echo $main->appName;?>">
+                        <img src="images/logo.svg" height="32" alt="<?php echo $main->appName; ?>">
                     </a>
                 </div>
                 <nav id="main_menu" class="mobile_menu navbar-collapse">
@@ -29,4 +29,4 @@
                     </ul>
                 </nav>
             </div>
-        </header>
+</header>

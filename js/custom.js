@@ -41,6 +41,21 @@ function geolocate() {
     }
 }
 
-function saveDetailedBooking(){
-    window.location='detailed_booking.php'
+/**
+ * Counting the total price to be charged. 
+ */
+function updatePrice(obj){
+var currentPrice=parseFloat(document.getElementById("total-price-holder").value);
+var selectedService=obj.id;
+var identifier=selectedService.split("-");
+var unitPriceHolder="service-price-"+identifier[1];
+var previousPriceHolder="previous-service-price-"+identifier[1];
+var unitPrice=document.getElementById(unitPriceHolder).value;
+var quantity=obj.value;
+var servicePrice=unitPrice*quantity;
+var previousPrice=parseFloat(document.getElementById(previousPriceHolder).value);
+var totalPrice=currentPrice+servicePrice-previousPrice;
+document.getElementById(previousPriceHolder).value=servicePrice;
+document.getElementById("total-price-holder").value=totalPrice;
+document.getElementById("total-price").innerHTML=totalPrice;
 }

@@ -67,9 +67,7 @@ require '../includes/interface.php';
             </div>
         </div>
     </div>
-    <button class="button btn_lg btn_blue btn_full" onclick="saveArticle('../dashboard');" id="btn-book-basic" type="submit">BOOK A ROOM NOW</button>
-    <div class="a_center mt10">
-        <button onclick="saveDetailedBooking();" class="button btn_lg btn_full">Detailed Booking Form</button>
-    </div>
+    <!-- <button class="button btn_lg btn_blue btn_full" data-toggle="modal" data-target="#bookServiceModal"  onclick="saveArticle('../dashboard');" id="btn-book-basic" type="submit">BOOK NOW</button> -->
+    <button class="button btn_lg btn_blue btn_full" data-toggle="modal" data-target="#bookServiceModal" id="btn-book-basic" type="submit">BOOK NOW</button>
     <div id="board-notification"></div>
 </form>

@@ -9,10 +9,12 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand light" href="#">
-               <img src="../images/logo.png" alt="logo">
+               <span><?php echo $main->appName; ?></span> 
+               <!-- <img src="../images/logo.png" alt="<?php //echo $main->appName; ?>"> -->
             </a>
             <a class="navbar-brand dark nodisplay" href="#">
-               <img src="../images/logo.png" height="32" alt="logo">
+               <span><?php echo $main->appName; ?></span> 
+               <!-- <img src="../images/logo.png" height="32" alt="<?php //echo $main->appName; ?>"> -->
             </a>
         </div>
         <nav id="main_menu" class="mobile_menu navbar-collapse">

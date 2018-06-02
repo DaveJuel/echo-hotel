@@ -19,7 +19,7 @@ require '../includes/interface.php';
             <select name="booking-purpose" id="add_visit_purpose" class="form-control" title="Specify the service" data-header="Specify the service">
             <option>Select service</option>
             <?php
-$serviceList = R::getCol("SELECT title FROM service");
+$serviceList = R::getCol("SELECT name FROM service");
 for ($count = 0; null !== $serviceList && $count < count($serviceList); $count++) {
     echo "<option value='" . $serviceList[$count] . "'>" . $serviceList[$count] . "</option>";
 }

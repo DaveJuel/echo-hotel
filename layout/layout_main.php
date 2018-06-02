@@ -62,34 +62,9 @@
         </div>
 
         <div class="wrapper">
-        <!-- ========== TOP MENU ========== -->
-        <div class="top_menu transparent hidden-xs">
-            <div class="container">
-                <ul class="top_menu_right">
-                    <li><i class="fa  fa-phone"></i><a href="tel:18475555555"> 1-888-123-4567 </a></li>
-                    <li class="email"><i class="fa  fa-envelope-o "></i> <a href="mailto:contact@site.com">contact@site.com</a></li>
-                    <li class="language-switcher">
-                        <nav class="dropdown">
-                            <a href="#" class="dropdown-toggle select" data-hover="dropdown" data-toggle="dropdown">
-                                <i class="famfamfam-flag-gb "></i>English<b class="caret"></b>
-                            </a>
-                            <ul class="dropdown-menu">
-                                <li><a href="#"><i class="famfamfam-flag-gr"></i>Ελληνικά</a></li>
-                                <li><a href="#"><i class="famfamfam-flag-it "></i>Italiano</a></li>
-                                <li><a href="#"><i class="famfamfam-flag-de "></i>Deutsch</a></li>
-                                <li><a href="#"><i class="famfamfam-flag-fr "></i>Français</a></li>
-                                <li><a href="#"><i class="famfamfam-flag-es "></i>Español</a></li>
-                            </ul>
-                        </nav>
-                    </li>
-                </ul>
-            </div>
-        </div>
             <?php include '../components/header.php'; ?>
             <?php include '../components/modular.php'; ?>
-            <div id="content-container">
-               <?php echo $content; ?>
-            </div>            
+            <?php echo $content; ?>
             <?php include '../components/footer.php'; ?>
         </div>
 
@@ -99,9 +74,10 @@
         </div>
 
         <!-- ========== NOTIFICATION ========== -->
-        <div id="land-notification"></div>
+        <div id="notification"></div>
 
-        <!-- ========== JAVASCRIPT ========== -->       
+        <!-- ========== JAVASCRIPT ========== -->
+        <script type="text/javascript" src="../js/custom.js"></script>
         <script type="text/javascript" src="../js/jquery.min.js"></script>        
         <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyARYImebnuXTLS7DslhfUVx3yJXtM-rpgk&libraries=places&callback=initAutocomplete" async defer></script>
         <script type="text/javascript" src="../js/bootstrap.min.js"></script>
@@ -121,8 +97,6 @@
         <script type="text/javascript" src="../js/jquery.countdown.min.js"></script>
         <script type="text/javascript" src="../js/main.js"></script>
         <script type="text/javascript" src="../js/tawkChat.js"></script>
-        <script type="text/javascript" src="../dashboard/js/interface.js"></script>
-        <script type="text/javascript" src="../js/custom.js"></script>
         <!-- ========== REVOLUTION SLIDER ========== -->
         <script type="text/javascript" src="../revolution/js/jquery.themepunch.tools.min.js"></script>
         <script type="text/javascript" src="../revolution/js/jquery.themepunch.revolution.min.js"></script>

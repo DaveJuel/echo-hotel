@@ -23,8 +23,8 @@ function notifier(status, text) {
         output = "<span class='alert alert-info'><span class='fa fa-spinner fa-pulse'></span>" + text + "</span>";
     } else {
         output = "<span class='alert alert-info'>" + text + "</span>";
-    }    
-    document.getElementById("board-notification").innerHTML = output;
+    }
+    document.getElementById("notification").innerHTML = output;
 }
 /*
  * ============ LOGIN ===============
@@ -43,7 +43,8 @@ $("#login-form").on('submit', function (e) {
         'log_username': username,
         'log_password': password
     };
-
+    output = '<div class="alert alert-info"><span class="notification-icon"><i class="glyphicon glyphicon-repeat fast-right-spinner" aria-hidden="true"></i></span><span class="notification-text">Logging in...</span></div>';
+    $("#notification").html(output);   
     //Ajax post data to server
     $.post('../includes/interface.php', post_data, function (response) {
         //Response server message
@@ -152,38 +153,33 @@ $("#add-user-form").on('submit', function (e) {
 //END ADD USER------------------------
 
 //REGISTER
-$("register-form").on("submit", function (e) {
-    e.preventDefault();
-    var fname = $("input[name=register_fname]").val();
-    var lname = $("input[name=register_lname]").val();
-    var email = $("input[name=register_email]").val();
-    var username = $("input[name=register_username]").val();
+$("#register-form").on("submit", function (e) {
+    e.preventDefault();   
+    var firstName =  $("input[name=register_fname]").val();
+    var lastName =  $("input[name=register_lname]").val();
+    var email = $("input[name=register_email]").val();    
     var password = $("input[name=register_password]").val();
     var confirmPassword = $("input[name=confirm_password]").val();
-
     //Data to be sent to server
     var post_data;
     var output;
     post_data = {
-        'action': "add_user",
-        'fname': fname,
-        'lname': lname,
-        'oname': oname,
-        'email': email,
-        'phone': "",
-        'address': "",
-        'user_type': 0,
-        'username': username,
-        'password': password,
+        'action': "sign_up",
+        'register_fname': firstName,
+        'register_lname': lastName,
+        'register_email': email,
+        'register_password': password,
         'confirm_password': confirmPassword
     };
-
+    output = '<div class="alert alert-info"><span class="notification-icon"><i class="glyphicon glyphicon-repeat fast-right-spinner" aria-hidden="true"></i></span><span class="notification-text"> Creating account...</span></div>';
+    $("#notification").html(output);   
     //Ajax post data to server
     $.post('../includes/interface.php', post_data, function (response) {
         //Response server message
         if (response.type == 'error') {
             output = '<div class="alert alert-danger"><span class="notification-icon"><i class="glyphicon glyphicon-warning-sign" aria-hidden="true"></i></span><span class="notification-text">' + response.text + '</span></div>';
         } else if (response.type == "success") {
+            $("input, .form-group").val('');
             output = '<div class="alert alert-success"><span class="notification-icon"><i class="glyphicon glyphicon-ok-sign" aria-hidden="true"></i></span><span class="notification-text">' + response.text + '</span></div>';
         } else {
             output = '<div class="alert alert-warning"><span class="notification-icon"><i class="glyphicon glyphicon-question-sign" aria-hidden="true"></i></span><span class="notification-text">' + response.text + '</span></div>';
@@ -252,19 +248,23 @@ $(".save-article").on('click', function (e) {
     }
 });
 
-function fetchDataToSave(articleId, calledFrom) {
+/**
+ * Deleting the content
+*/
+function deleteSubject(obj){
+    var subjectTitle=obj.value;
+    var dataToPost="action=delete_subject&subject_title="+subjectTitle;
+    postData(dataToPost);
+}
+
+function fetchDataToSave(articleId) {
     var dataToPost;
     if (articleId != null) {
         //get attributes
         var attributeList = null;
         if (articleId != null) {
             var http = new XMLHttpRequest();
-            var url = "";
-            if (calledFrom != null) {
-                url = calledFrom + "/includes/interface.php";
-            } else {
-                url = "../includes/interface.php";
-            }
+            var url = "../includes/interface.php";
             var params = "action=get_article_attributes&article_id=" + articleId;
             http.open("POST", url, true);
             http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -288,9 +288,9 @@ function fetchDataToSave(articleId, calledFrom) {
                             }
                         }
                         if (hasFile) {
-                            uploadData(fileObject, dataToPost, calledFrom);
+                            uploadData(fileObject, dataToPost);
                         } else {
-                            postData(dataToPost, calledFrom);
+                            postData(dataToPost);
                         }
                     } else {
                         notifier(0, "Unable to read attributes");
@@ -303,22 +303,17 @@ function fetchDataToSave(articleId, calledFrom) {
 }
 
 //saving the form with ajax
-function saveArticle(calledFrom) {
+function saveArticle() {
     //get the article id
     notifier(2, " Saving...");
     var articleId = document.getElementById("article_id").value;
-    fetchDataToSave(articleId, calledFrom);
+    fetchDataToSave(articleId);
 }
 
-function postData(formData, calledFrom) {
+function postData(formData) {
     console.log("PARAMS: " + formData);
     var http = new XMLHttpRequest();
-    var url = "";
-    if (calledFrom != null) {
-        url = calledFrom + "/includes/interface.php";
-    } else {
-        url = "../includes/interface.php";
-    }
+    var url = "../includes/interface.php";
     http.open("POST", url, true);
     http.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     http.onreadystatechange = function () { //Call a function when the state changes.
@@ -328,22 +323,18 @@ function postData(formData, calledFrom) {
                 document.getElementsByTagName('input').value = "";
                 document.getElementsByTagName('textarea').value = "";
                 notifier(1, response.text);
-            } else {
-                notifier(0, "Failed to save");
+            } else if(response.type == "error"){
+                notifier(0, response.text);
+            }else{
+                notifier(0, "Error occured saving");
             }
         }
     }
     http.send(formData);
 }
 
-function uploadData(fileObj, params, calledFrom) {
+function uploadData(fileObj, params) {
     if (params != null && fileObj != null) {
-        var url = "";
-        if (calledFrom != null) {
-            url = calledFrom + "/includes/interface.php";
-        } else {
-            url = "../includes/interface.php";
-        }
         var fd = new FormData();
         fd.append("image", fileObj);
         var http = new XMLHttpRequest();
@@ -351,7 +342,7 @@ function uploadData(fileObj, params, calledFrom) {
         http.addEventListener("load", completeHandler, false);
         http.addEventListener("error", errorHandler, false);
         http.addEventListener("abort", abortHandler, false);
-        http.open("POST", url + "?" + params);
+        http.open("POST", "../includes/interface.php?" + params);
         http.send(fd);
     }
 }

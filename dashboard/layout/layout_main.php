@@ -1,7 +1,7 @@
 <?php
 //login checking
 $login_status = $user->checkLogin();
-if ($login_status != TRUE) {
+if ($login_status != true) {
     header("location:login.php");
 }
 ?>
@@ -25,30 +25,30 @@ if ($login_status != TRUE) {
         <link href="../plugins/uniform/css/uniform.default.min.css" rel="stylesheet"/>
         <link href="../plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
         <link href="../plugins/fontawesome/css/font-awesome.css" rel="stylesheet" type="text/css"/>
-        <link href="../plugins/line-icons/simple-line-icons.css" rel="stylesheet" type="text/css"/>	
-        <link href="../plugins/offcanvasmenueffects/css/menu_cornerbox.css" rel="stylesheet" type="text/css"/>	
-        <link href="../plugins/waves/waves.min.css" rel="stylesheet" type="text/css"/>	
+        <link href="../plugins/line-icons/simple-line-icons.css" rel="stylesheet" type="text/css"/>
+        <link href="../plugins/offcanvasmenueffects/css/menu_cornerbox.css" rel="stylesheet" type="text/css"/>
+        <link href="../plugins/waves/waves.min.css" rel="stylesheet" type="text/css"/>
         <link href="../plugins/switchery/switchery.min.css" rel="stylesheet" type="text/css"/>
         <link href="../plugins/3d-bold-navigation/css/style.css" rel="stylesheet" type="text/css"/>
-        <link href="../plugins/slidepushmenus/css/component.css" rel="stylesheet" type="text/css"/>	
-        <link href="../plugins/weather-icons-master/css/weather-icons.min.css" rel="stylesheet" type="text/css"/>	
-        <link href="../plugins/metrojs/MetroJs.min.css" rel="stylesheet" type="text/css"/>	
-        <link href="../plugins/toastr/toastr.min.css" rel="stylesheet" type="text/css"/>	
+        <link href="../plugins/slidepushmenus/css/component.css" rel="stylesheet" type="text/css"/>
+        <link href="../plugins/weather-icons-master/css/weather-icons.min.css" rel="stylesheet" type="text/css"/>
+        <link href="../plugins/metrojs/MetroJs.min.css" rel="stylesheet" type="text/css"/>
+        <link href="../plugins/toastr/toastr.min.css" rel="stylesheet" type="text/css"/>
 
         <!-- Dashboard Styles -->
         <link href="../css/modern.min.css" rel="stylesheet" type="text/css"/>
         <link href="../css/themes/green.css" class="theme-color" rel="stylesheet" type="text/css"/>
         <link href="../css/custom.css" rel="stylesheet" type="text/css"/>
-        <link href="../plugins/datatables/css/jquery.datatables.min.css" rel="stylesheet" type="text/css"/>	
+        <link href="../plugins/datatables/css/jquery.datatables.min.css" rel="stylesheet" type="text/css"/>
         <link href="../plugins/datatables/css/jquery.datatables_themeroller.css" rel="stylesheet" type="text/css"/>
         <script src="../plugins/3d-bold-navigation/js/modernizr.js"></script>
         <script src="../plugins/offcanvasmenueffects/js/snap.svg-min.js"></script>
-        
+
         <!--Home Styles-->
-        
+
         <script>
             $(document).ready(function () {
-                $('#example').DataTable();
+                $('.details-table-view').DataTable();
             });
         </script>
         <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
@@ -61,17 +61,17 @@ if ($login_status != TRUE) {
     </head>
     <body class="page-header-fixed">
         <?php
-        include ("../content/modular.php");
-        ?>
-        <div class="overlay"></div>        
-        <?php include '../content/chat.php'; ?>
-        <?php include '../content/header.php'; ?>
+include "../content/modular.php";
+?>
+        <div class="overlay"></div>
+        <?php include '../content/chat.php';?>
+        <?php include '../content/header.php';?>
         <!-- Search Form -->
         <main class="page-content content-wrap">
-            <?php include '../content/navbar.php'; ?>
+            <?php include '../content/navbar.php';?>
             <!-- Navbar -->
             <div class="page-sidebar sidebar">
-                <?php include '../content/sidebar.php'; ?><!-- Page Sidebar Inner -->
+                <?php include '../content/sidebar.php';?><!-- Page Sidebar Inner -->
             </div><!-- Page Sidebar -->
             <div class="page-inner">
                 <div class="page-title">
@@ -79,7 +79,7 @@ if ($login_status != TRUE) {
                     <div class="page-breadcrumb">
                         <ol class="breadcrumb">
                             <li><a href="home.php">Dashboard</a></li>
-                            <li class="active"><?php echo $title ?></li>
+                            <li class="active"><?php echo $title ?> <span id="notification"></span></li>
                         </ol>
                     </div>
                 </div>
@@ -87,10 +87,10 @@ if ($login_status != TRUE) {
                     <?php echo $content ?>
                 </div>
                 <!-- Main Wrapper -->
-                <?php include '../content/footer.php'; ?>
+                <?php include '../content/footer.php';?>
             </div><!-- Page Inner -->
         </main><!-- Page Content -->
-        <?php include '../content/navbar_ext.php'; ?>
+        <?php include '../content/navbar_ext.php';?>
         <div class="cd-overlay"></div>
         <!-- Javascripts -->
         <script src="../plugins/jquery-ui/jquery-ui.min.js"></script>
@@ -118,9 +118,9 @@ if ($login_status != TRUE) {
         <script src="../js/pages/dashboard.js"></script>
         <script src="../js/main.js"></script>
         <script src="../js/pages/table-data.js"></script>
-        <script src="../plugins/datatables/js/jquery.datatables.min.js"></script>  
+        <script src="../plugins/datatables/js/jquery.datatables.min.js"></script>
         <script src="../js/custom.js"></script>
-        <script src="../js/interface.js"></script>
+        <script src="../js/interface.js"></script>       
         <script type="text/javascript" src="../../js/tawkChat.js"></script>
     </body>
 </html>

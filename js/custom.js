@@ -41,21 +41,23 @@ function geolocate() {
     }
 }
 
-/**
- * Counting the total price to be charged. 
- */
-function updatePrice(obj){
-var currentPrice=parseFloat(document.getElementById("total-price-holder").value);
-var selectedService=obj.id;
-var identifier=selectedService.split("-");
-var unitPriceHolder="service-price-"+identifier[1];
-var previousPriceHolder="previous-service-price-"+identifier[1];
-var unitPrice=document.getElementById(unitPriceHolder).value;
-var quantity=obj.value;
-var servicePrice=unitPrice*quantity;
-var previousPrice=parseFloat(document.getElementById(previousPriceHolder).value);
-var totalPrice=currentPrice+servicePrice-previousPrice;
-document.getElementById(previousPriceHolder).value=servicePrice;
-document.getElementById("total-price-holder").value=totalPrice;
-document.getElementById("total-price").innerHTML=totalPrice;
+function validateDonorForm(){
+	var valid=false;
+	var notifier=document.getElementById("notification-par");
+	var phone=document.getElementById("donate_phone").value;
+	var names=document.getElementById("donate_name").value;
+	var address=document.getElementById("autocomplete").value;
+	var age=document.getElementById("donate_age").value;
+	if(phone.length<10||phone.length>12){
+		notifier.innerHTML="<p style='color:red'>Invalid phone number</p>"		
+	}else if(names==null||names==""){
+		notifier.innerHTML="<p style='color:red'>Invalid names</p>"
+	}else if(address==null||address==""){
+		notifier.innerHTML="<p style='color:red'>Invalid address</p>"
+	}else if(age==null||age==""||age<=17){
+		notifier.innerHTML="<p style='color:red'>Age must be greater than 17.</p>"
+	}else{
+		valid=true;
+	}
+	return valid;
 }

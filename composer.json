@@ -1,19 +1,19 @@
 {
-     "name": "Tembeyafrica",
-     "version": "0.0.1",
-     "description":"Guidance across Africa",
+     "name": "tembeyafrica",
+     "version": "1.0.0",
+     "description":"Tourism",
      "authors": [
         {
             "name": "David NIWEWE",
             "email": "davejuelz@gmail.com",
-            "homepage": "https://www.tembeyafrica.herokuapp.com",
+            "homepage": "https://www.addax.herokuapp.com",
             "role": "Developer"
         }
     ],
-  "require": {
-    "ext-mysql": "*",
+  "require": {   
     "ext-gettext": "*",
-    "ext-mbstring":"*"
+    "ext-mbstring":"*",
+          "phpmailer/phpmailer": "^6.0"
   },  
    "require-dev": {
       "heroku/heroku-buildpack-php": "*"

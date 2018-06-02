@@ -10,7 +10,9 @@ $title = "Login";
                     <div class="row">
                         <div class="col-md-6">
                             <a href="#" class="logo-name text-lg"><?php echo $main->appName; ?></a>
-                            <p class="login-info"><b><?php echo $main->appName; ?></b> gets you around the continent of Africa, and make you visit places with outstanding beauty.  <div class="btn-group btn-group-justified m-t-sm" role="group" aria-label="Justified button group">
+                            <p class="login-info"><b><?php echo $main->appName; ?></b> Is a tourism and guidance company<br>
+                                We provide the best accomodation.</p>
+                            <div class="btn-group btn-group-justified m-t-sm" role="group" aria-label="Justified button group">
                                 <a href="#" class="btn btn-facebook"><i class="fa fa-facebook"></i> Facebook</a>
                                 <a href="#" class="btn btn-twitter"><i class="fa fa-twitter"></i> Twitter</a>
                                 <a href="#" class="btn btn-google"><i class="fa fa-google-plus"></i> Google+</a>

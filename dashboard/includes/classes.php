@@ -2171,7 +2171,9 @@ class web extends main
                 $contentItem = $contentList[$outer];
                 switch ($formatType) {
                     case 1: //slide
-                        $format->showSlider($contentItem[1], $contentItem[2], $contentItem[3]);
+                        //$format->showSlider($contentItem[1], $contentItem[2], $contentItem[3]);
+                        $format->showSlider_theme2($contentItem[1],$contentItem[2],$contentItem[3],
+                        $contentItem[4],$contentItem[5],$contentItem[6]);
                         break;
                     case 2: //features
                         $format->showFeature($contentList);

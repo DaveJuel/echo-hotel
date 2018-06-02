@@ -16,7 +16,8 @@
     
     /*Document is Raedy */
     $(document).ready(function () {
-
+/*========LOAD BOOKING FORM========*/
+$("#booking-form-holder").load("../dashboard/forms/booking_form.php");
         /*========== SMOOTHSTATE ==========*/
         $('#smoothpage').smoothState({ 
             anchors: 'nav a',
